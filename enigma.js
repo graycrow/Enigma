@@ -1,5 +1,4 @@
 /*jslint browser: true, devel: true, bitwise: true, plusplus: true, unparam: true, white: true */
-/* https://github.com/chadheim/pebble-watchface-slider/blob/master/src/main.c */
 "use strict";
 (function () {
     var frame = document.createElement("canvas"),
