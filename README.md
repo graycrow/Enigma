@@ -8,6 +8,7 @@ Based on @chadheim's [C code](https://github.com/chadheim/pebble-watchface-slide
 | File | Description |
 | --- | --- |
 | **enigma.js** | ES5 version |
+| **enigma.min.js** | Minified ES5 version |
 | **enigma_ts.js** | ES6 version created by TypeScript 1.5 compiler |
 | **enigma_ts.ts** | TypeScript version |
 | **index.html** | the page |
