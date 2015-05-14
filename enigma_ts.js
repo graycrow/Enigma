@@ -1,4 +1,3 @@
-"use strict";
 class Layer {
     constructor(x, y, w, h) {
         this.x = x;
@@ -15,6 +14,7 @@ class Layer {
     }
 }
 (() => {
+    "use strict";
     var frame = document.createElement("canvas"), requestAnimationFrame = window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||

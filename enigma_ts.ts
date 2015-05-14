@@ -1,5 +1,3 @@
-"use strict";
-
 interface Window {
     requestAnimationFrame(callback: any, element?: any): void;
     mozRequestAnimationFrame(callback: any, element?: any): void;
@@ -33,6 +31,7 @@ class Layer {
 }
 
 (() => {
+    "use strict";
     var frame: HTMLCanvasElement = document.createElement("canvas"),
         requestAnimationFrame = window.requestAnimationFrame ||
             window.mozRequestAnimationFrame ||
