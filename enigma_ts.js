@@ -119,7 +119,7 @@ class Layer {
     };
     const animateLayer = (i, duration) => {
         const start = new Date().getTime(), end = start + duration, layer = textLayer[i], current = layer.y, distance = scrollTo[i] - current, step = () => {
-            var timestamp = new Date().getTime(), progress = Math.min((duration - (end - timestamp)) / duration, 1);
+            const timestamp = new Date().getTime(), progress = Math.min((duration - (end - timestamp)) / duration, 1);
             layer.y = current + (distance * progress);
             drawLayer(layer);
             if (progress < 1) {
@@ -145,7 +145,7 @@ class Layer {
     const checkTime = () => {
         let m = null;
         return () => {
-            var d = new Date(), n = d.getMinutes();
+            const d = new Date(), n = d.getMinutes();
             if (m !== n) {
                 displayTime(d);
             }
