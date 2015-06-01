@@ -1,3 +1,4 @@
+"use strict";
 class Layer {
     constructor(x, y, w, h) {
         this.x = x;
@@ -14,8 +15,7 @@ class Layer {
     }
 }
 (() => {
-    "use strict";
-    var frame = document.createElement("canvas"), requestAnimationFrame = window.requestAnimationFrame ||
+    const frame = document.createElement("canvas"), requestAnimationFrame = window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame, numbers = [[], [], [], []], offsets = [[], [], [], []], order = [[], [], [], []], textLayer = [], scrollTo = [], digits = [
@@ -37,31 +37,29 @@ class Layer {
         Black: "#000000",
         JazzberryJam: "#AA0055",
         White: "#FFFFFF"
-    }, ctx, colWidth, center, lineHeight, halfLineHeight;
-    var fillOrder = (i) => {
-        var n, k, tmp;
-        for (n = 0; n < 10; ++n) {
-            order[i][n] = n;
+    };
+    let ctx, colWidth, center, lineHeight, halfLineHeight;
+    const fillOrder = (i) => {
+        for (let j = 0; j < 10; ++j) {
+            order[i][j] = j;
         }
-        for (n = 0; n < 10; ++n) {
-            k = Math.floor((Math.random() * 10));
+        for (let n = 0; n < 10; ++n) {
+            const k = Math.floor((Math.random() * 10));
             if (n !== k) {
-                tmp = order[i][k];
+                const tmp = order[i][k];
                 order[i][k] = order[i][n];
                 order[i][n] = tmp;
             }
         }
     };
-    var fillOffsets = (i) => {
-        var n;
-        for (n = 0; n < 10; ++n) {
+    const fillOffsets = (i) => {
+        for (let n = 0; n < 10; ++n) {
             offsets[i][n] = order[i][n] + 2;
         }
     };
-    var fillNumbers = (i) => {
-        var n, p;
-        for (n = 0; n < 10; ++n) {
-            p = (order[i][n]) + 2;
+    const fillNumbers = (i) => {
+        for (let n = 0; n < 10; ++n) {
+            let p = (order[i][n]) + 2;
             numbers[i][p] = n;
             if (p < 4) {
                 p += 10;
@@ -73,11 +71,11 @@ class Layer {
             }
         }
     };
-    var drawDigit = (num, x, y, color) => {
-        var paddingX = x + (colWidth - pixel.width * 3) / 2 >> 0, from = center - halfLineHeight, to = center + halfLineHeight, i;
+    const drawDigit = (num, x, y, color) => {
+        const paddingX = x + (colWidth - pixel.width * 3) / 2 >> 0, from = center - halfLineHeight, to = center + halfLineHeight;
         x = paddingX;
         y = y + ((lineHeight - pixel.height * 5) / 2 >> 0) - pixel.height;
-        for (i = 0; i < 15; ++i) {
+        for (let i = 0; i < 15; ++i) {
             if (i % 3 === 0) {
                 x = paddingX;
                 y += pixel.height;
@@ -103,15 +101,15 @@ class Layer {
             x += pixel.width;
         }
     };
-    var drawLayer = (layer) => {
-        var y = layer.y, i;
+    const drawLayer = (layer) => {
+        let y = layer.y;
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = colors.Black;
         ctx.fillRect(layer.x, layer.y, layer.w, layer.h);
         ctx.globalCompositeOperation = "destination-out";
         ctx.fillStyle = layer.color;
         ctx.fillRect(layer.x, center - halfLineHeight, layer.w, lineHeight);
-        for (i = 0; i < layer.text.length; ++i) {
+        for (let i = 0; i < layer.text.length; ++i) {
             drawDigit(layer.text[i], layer.x, y, layer.color);
             y += lineHeight;
         }
@@ -119,8 +117,8 @@ class Layer {
         ctx.fillStyle = colors.JazzberryJam;
         ctx.fillRect(layer.x, center - halfLineHeight, layer.w, lineHeight);
     };
-    var animateLayer = (i, duration) => {
-        var start = new Date().getTime(), end = start + duration, layer = textLayer[i], current = layer.y, distance = scrollTo[i] - current, step = () => {
+    const animateLayer = (i, duration) => {
+        const start = new Date().getTime(), end = start + duration, layer = textLayer[i], current = layer.y, distance = scrollTo[i] - current, step = () => {
             var timestamp = new Date().getTime(), progress = Math.min((duration - (end - timestamp)) / duration, 1);
             layer.y = current + (distance * progress);
             drawLayer(layer);
@@ -130,22 +128,22 @@ class Layer {
         };
         return step();
     };
-    var setDigit = (i, num) => {
-        var prev = scrollTo[i];
+    const setDigit = (i, num) => {
+        const prev = scrollTo[i];
         scrollTo[i] = (offsets[i][num] * -lineHeight) + center - halfLineHeight;
         if (prev !== scrollTo[i]) {
             animateLayer(i, 1000);
         }
     };
-    var displayTime = (date) => {
-        var h = date.getHours(), m = date.getMinutes();
+    const displayTime = (date) => {
+        const h = date.getHours(), m = date.getMinutes();
         setDigit(0, h / 10 >> 0);
         setDigit(1, h % 10);
         setDigit(2, m / 10 >> 0);
         setDigit(3, m % 10);
     };
-    var checkTime = () => {
-        var m = null;
+    const checkTime = () => {
+        let m = null;
         return () => {
             var d = new Date(), n = d.getMinutes();
             if (m !== n) {
@@ -154,8 +152,7 @@ class Layer {
             m = n;
         };
     };
-    var init = () => {
-        var i;
+    const init = () => {
         frame.width = 144;
         frame.height = 168;
         document.body.appendChild(frame);
@@ -164,7 +161,7 @@ class Layer {
         center = frame.height / 2;
         lineHeight = frame.height / 4;
         halfLineHeight = frame.height / 8;
-        for (i = 0; i < 4; ++i) {
+        for (let i = 0; i < 4; ++i) {
             fillOrder(i);
             fillOffsets(i);
             fillNumbers(i);

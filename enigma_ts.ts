@@ -1,3 +1,4 @@
+"use strict";
 interface Window {
     requestAnimationFrame(callback: any, element?: any): void;
     mozRequestAnimationFrame(callback: any, element?: any): void;
@@ -31,8 +32,7 @@ class Layer {
 }
 
 (() => {
-    "use strict";
-    var frame: HTMLCanvasElement = document.createElement("canvas"),
+    const frame: HTMLCanvasElement = document.createElement("canvas"),
         requestAnimationFrame = window.requestAnimationFrame ||
             window.mozRequestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -52,7 +52,7 @@ class Layer {
             [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1],
             [1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1],
             [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-            [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1] 
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1]
         ],
         pixel = {
             width: 5,
@@ -63,43 +63,38 @@ class Layer {
             Black: "#000000",
             JazzberryJam: "#AA0055",
             White: "#FFFFFF"
-        },
-        ctx: CanvasRenderingContext2D,
+        };
+
+    let ctx: CanvasRenderingContext2D,
         colWidth: number,
         center: number,
         lineHeight: number,
         halfLineHeight: number;
 
-    var fillOrder = (i: number): void => {
-        var n: number, k: number, tmp: number;
-
-        for (n = 0; n < 10; ++n) {
-            order[i][n] = n;
+    const fillOrder = (i: number): void => {
+        for (let j = 0; j < 10; ++j) {
+            order[i][j] = j;
         }
 
-        for (n = 0; n < 10; ++n) {
-            k = Math.floor((Math.random() * 10));
+        for (let n = 0; n < 10; ++n) {
+            const k = Math.floor((Math.random() * 10));
             if (n !== k) {
-                tmp = order[i][k];
+                const tmp = order[i][k];
                 order[i][k] = order[i][n];
                 order[i][n] = tmp;
             }
         }
     };
 
-    var fillOffsets = (i: number): void => {
-        var n: number;
-
-        for (n = 0; n < 10; ++n) {
+    const fillOffsets = (i: number): void => {
+        for (let n = 0; n < 10; ++n) {
             offsets[i][n] = order[i][n] + 2;
         }
     };
 
-    var fillNumbers = (i: number): void => {
-        var n: number, p: number;
-
-        for (n = 0; n < 10; ++n) {
-            p = (order[i][n]) + 2;
+    const fillNumbers = (i: number): void => {
+        for (let n = 0; n < 10; ++n) {
+            let p = (order[i][n]) + 2;
             numbers[i][p] = n;
 
             if (p < 4) {
@@ -112,16 +107,15 @@ class Layer {
         }
     };
 
-    var drawDigit = (num: number, x: number, y: number, color: string): void => {
-        var paddingX = x + (colWidth - pixel.width * 3) / 2 >> 0,
+    const drawDigit = (num: number, x: number, y: number, color: string): void => {
+        const paddingX = x + (colWidth - pixel.width * 3) / 2 >> 0,
             from = center - halfLineHeight,
-            to = center + halfLineHeight,
-            i: number;
+            to = center + halfLineHeight;
 
         x = paddingX;
         y = y + ((lineHeight - pixel.height * 5) / 2 >> 0) - pixel.height;
 
-        for (i = 0; i < 15; ++i) {
+        for (let i = 0; i < 15; ++i) {
             if (i % 3 === 0) {
                 x = paddingX;
                 y += pixel.height;
@@ -150,9 +144,8 @@ class Layer {
         }
     };
 
-    var drawLayer = (layer: Layer): void => {
-        var y = layer.y,
-            i: number;
+    const drawLayer = (layer: Layer): void => {
+        let y = layer.y;
 
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = colors.Black;
@@ -162,7 +155,7 @@ class Layer {
         ctx.fillStyle = layer.color;
         ctx.fillRect(layer.x, center - halfLineHeight, layer.w, lineHeight);
 
-        for (i = 0; i < layer.text.length; ++i) {
+        for (let i = 0; i < layer.text.length; ++i) {
             drawDigit(layer.text[i], layer.x, y, layer.color);
             y += lineHeight;
         }
@@ -172,8 +165,8 @@ class Layer {
         ctx.fillRect(layer.x, center - halfLineHeight, layer.w, lineHeight);
     };
 
-    var animateLayer = (i: number, duration: number) => {
-        var start = new Date().getTime(),
+    const animateLayer = (i: number, duration: number) => {
+        const start = new Date().getTime(),
             end = start + duration,
             layer = textLayer[i],
             current = layer.y,
@@ -193,8 +186,8 @@ class Layer {
         return step();
     };
 
-    var setDigit = (i: number, num: number): void => {
-        var prev = scrollTo[i];
+    const setDigit = (i: number, num: number): void => {
+        const prev = scrollTo[i];
 
         scrollTo[i] = (offsets[i][num] * -lineHeight) + center - halfLineHeight;
 
@@ -203,8 +196,8 @@ class Layer {
         }
     };
 
-    var displayTime = (date: Date): void => {
-        var h = date.getHours(),
+    const displayTime = (date: Date): void => {
+        const h = date.getHours(),
             m = date.getMinutes();
 
         setDigit(0, h / 10 >> 0);
@@ -213,8 +206,8 @@ class Layer {
         setDigit(3, m % 10);
     };
 
-    var checkTime = () => {
-        var m: number = null;
+    const checkTime = () => {
+        let m: number = null;
 
         return () => {
             var d = new Date(),
@@ -228,9 +221,7 @@ class Layer {
         };
     };
 
-    var init = (): void => {
-        var i: number;
-
+    const init = (): void => {
         frame.width = 144;
         frame.height = 168;
         document.body.appendChild(frame);
@@ -240,7 +231,7 @@ class Layer {
         lineHeight = frame.height / 4;
         halfLineHeight = frame.height / 8;
 
-        for (i = 0; i < 4; ++i) {
+        for (let i = 0; i < 4; ++i) {
             fillOrder(i);
             fillOffsets(i);
             fillNumbers(i);
