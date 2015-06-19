@@ -31,7 +31,7 @@ class Layer {
     }
 }
 
-(() => {
+((): void => {
     const frame: HTMLCanvasElement = document.createElement("canvas"),
         requestAnimationFrame = window.requestAnimationFrame ||
             window.mozRequestAnimationFrame ||
